@@ -14,7 +14,7 @@ class MotorDriver:
         pins and turning off the motor for safety. 
         @param en_pin (There will be several parameters)
         """
-        en_pin = getattr(pyb.Pin.board, en_pin)
+        en_pin = getattr(pyb.Pin.board, en_pin) # get the pin value for the pin store in en_pin
         in1pin = getattr(pyb.Pin.board, in1pin)
         in2pin = getattr(pyb.Pin.board, in2pin)
  
