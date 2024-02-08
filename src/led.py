@@ -21,24 +21,6 @@ int_queue = cqueue.IntQueue(QUEUE_SIZE)
 first = 1
 micropython.alloc_emergency_exception_buf(100)
 
-# 
-# pinPA0 = pyb.Pin (pyb.Pin.board.PA0, pyb.Pin.OUT_PP)  # initializes the pin as an outport pin
-# #pinB0 = pyb.Pin (pyb.Pin.board.PB0,  value = 0) # initializes the input pin
-# 
-# # PWM
-# tim2 = pyb.Timer (2, freq=1000)
-# ch1 = tim2.channel (1, pyb.Timer.PWM_INVERTED, pin=pinPA0)
-# ch1.pulse_width_percent (100)
-# #pinPA0.high()
-# 
-# for i in range (10):
-#     
-#     time.sleep(4)
-#     ch1.pulse_width_percent (90)
-#     time.sleep(4)
-#     ch1.pulse_width_percent (10)
-
-
 
 def led_setup():
     pinPA0 = pyb.Pin (pyb.Pin.board.PA0, pyb.Pin.OUT_PP, value = 0)  # initializes the pin as an outport pin
@@ -47,7 +29,6 @@ def led_setup():
     ch1.pulse_width_percent (100)
     return(ch1,pinPA0,tim2)
     
-
 
 def led_brightness(perc,ch1):
 
@@ -71,7 +52,6 @@ def led_interrupt():
         if perc == 100:
             up_flg = 1
 
-    
 
 if __name__=="__main__":
     ret = led_setup()
@@ -91,19 +71,3 @@ if __name__=="__main__":
         except KeyboardInterrupt:
             break
         
-        
-#Motor
-        
-            
-            
-    
-    
-    
-#     while True:
-#         try:
-#             perc = float(input("Please give a brightness percentage: "))
-#             led_brightness(perc,ch1)
-#             time.sleep(4)
-#         except KeyboardInterrupt:
-#             break
-#     
