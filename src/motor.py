@@ -1,6 +1,8 @@
 #Motor
 import micropython
 import time
+import pyb
+# have to import pyb for it work on the board
 
 class MotorDriver:
     """! 
@@ -12,6 +14,9 @@ class MotorDriver:
         pins and turning off the motor for safety. 
         @param en_pin (There will be several parameters)
         """
+        en_pin = getattr(pyb.Pin.board, en_pin)
+        in1pin = getattr(pyb.Pin.board, in1pin)
+        in2pin = getattr(pyb.Pin.board, in2pin)
  
         self.ENx = pyb.Pin (en_pin, pyb.Pin.OUT_PP, value = 0)
         self.IN1x = pyb.Pin (in1pin, pyb.Pin.OUT_PP, value = 0)
@@ -40,7 +45,7 @@ class MotorDriver:
             self.tch2.pulse_width_percent(level)
         else:
             self.tch2.pulse_width_percent(0)
-            self.tch1.pulse_width_percent(100+level)
+            self.tch1.pulse_width_percent(-1*level)
                 
         print (f"Setting duty cycle to {level}")
 
@@ -57,23 +62,25 @@ class MotorDriver:
 
 if __name__ == "__main__":
 
-    motor1 = MotorDriver (pyb.Pin.board.PA10, pyb.Pin.board.PB4, pyb.Pin.board.PB5, 3)
+    motor1 = MotorDriver ('PA10', 'PB4', 'PB5', 3)
     #motor1 = MotorDriver (pyb.Pin(pyb.Pin.board.PA10, pyb.Pin.OUT_PP, value = 0), PB4, PB5, 3)
     #motor2 = MotorDriver (PC1, PA0, PA1, 5)
     perc = -100
+    
     while True:
-        while True:
-            try:
-                for i in range(200):
+        try:
+            for i in range(200):
                     perc = perc + 1
                     motor1.set_duty_cycle(perc) 
                     time.sleep(0.05)
-                for i in range(200):
+            for i in range(200):
                     perc = perc - 1
                     motor1.set_duty_cycle(perc)  
                     time.sleep(0.05)
-            except KeyboardInterrupt:
-                break
+        except KeyboardInterrupt:
+            motor1.set_duty_cycle(0)
+            break
+        
 #    motor1.set_duty_cycle(50)
 #    time.sleep(5)
 #    motor1.set_duty_cycle(-50)
